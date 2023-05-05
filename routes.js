@@ -12,6 +12,7 @@ const {
   Create,
   Posts,
   Pitcure,
+  addPersonalInfo,
 } = require("./controller");
 
 const router = express.Router();
@@ -41,5 +42,7 @@ router.post("/create", Create);
 router.post("/posts", Posts);
 
 router.post("/picture", Pitcure);
+
+router.post("/personalinfo",addPersonalInfo )
 
 module.exports = router;
