@@ -1,4 +1,4 @@
-const { Group, Class, Post, Admin, User } = require("./schema");
+const { Group, Class, Post, Admin, User, PersonalInfo} = require("./schema");
 const bcrypt = require("bcryptjs");
 
 const Login = async (req, res) => {
@@ -60,6 +60,26 @@ const Register = async (req, res) => {
     console.log({ error });
   }
 };
+
+const addPersonalInfo = async (req, res) => {
+  try {
+    const { formData } = req.body;
+
+    if (!formData) {
+      return res.status(400).json({ error: "Please fill all fields" });
+    }
+
+    const personalInfo = new PersonalInfo(formData);
+    await personalInfo.save();
+
+    res.json({ message: "Personal Information Filled Successfully" });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+
 
 const Pitcure = async (req, res) => {
   const { userId, profilePic } = req.body;
@@ -230,4 +250,5 @@ module.exports = {
   Create,
   Posts,
   Pitcure,
+  addPersonalInfo,
 };
