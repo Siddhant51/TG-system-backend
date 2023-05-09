@@ -98,6 +98,29 @@ const postSchema = new mongoose.Schema({
   },
 });
 
+const commentSchema = new mongoose.Schema({
+  comment: {
+    type: String,
+    required: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  post: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+  },
+  class: {
+    type: String,
+    required: false,
+  },
+  group: {
+    type: String,
+    required: false,
+  },
+});
+
 userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
@@ -119,5 +142,6 @@ const Group = mongoose.model("Group", groupSchema);
 const User = mongoose.model("User", userSchema);
 const Admin = mongoose.model("Admin", adminSchema);
 const Post = mongoose.model("Post", postSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
-module.exports = { Class, Group, User, Admin, Post };
+module.exports = { Class, Group, User, Admin, Post, Comment };

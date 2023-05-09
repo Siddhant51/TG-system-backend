@@ -11,6 +11,8 @@ const {
   Register,
   Create,
   Posts,
+  SetComment,
+  GetComments,
   Pitcure,
 } = require("./controller");
 
@@ -39,6 +41,10 @@ router.post("/register", Register);
 router.post("/create", Create);
 
 router.post("/posts", Posts);
+
+router.post("/setcomment", SetComment);
+
+router.post("/getcomments", GetComments);
 
 router.post("/picture", Pitcure);
 
