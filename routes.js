@@ -14,6 +14,7 @@ const {
   SetComment,
   GetComments,
   Pitcure,
+  addPersonalInfo,
 } = require("./controller");
 
 const router = express.Router();
@@ -47,5 +48,7 @@ router.post("/setcomment", SetComment);
 router.post("/getcomments", GetComments);
 
 router.post("/picture", Pitcure);
+
+router.post("/personalinfo",addPersonalInfo )
 
 module.exports = router;
