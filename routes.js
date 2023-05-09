@@ -11,8 +11,9 @@ const {
   Register,
   Create,
   Posts,
+  SetComment,
+  GetComments,
   Pitcure,
-  addPersonalInfo,
 } = require("./controller");
 
 const router = express.Router();
@@ -41,8 +42,10 @@ router.post("/create", Create);
 
 router.post("/posts", Posts);
 
-router.post("/picture", Pitcure);
+router.post("/setcomment", SetComment);
 
-router.post("/personalinfo",addPersonalInfo )
+router.post("/getcomments", GetComments);
+
+router.post("/picture", Pitcure);
 
 module.exports = router;

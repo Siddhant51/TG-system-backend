@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(require("./routes"));
 
 const DB =
-  "mongodb+srv://Nikhil:Nikhil@tgsystem.el1zj1l.mongodb.net/TGsystem?retryWrites=true&w=majority";
+  "mongodb+srv://Siddhant:Siddhant@cluster0.s36geb7.mongodb.net/TGsystem?retryWrites=true&w=majority";
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
 
