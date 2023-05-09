@@ -1,4 +1,4 @@
-const { Group, Class, Post, Comment, Admin, User } = require("./schema");
+const { Group, Class, Post, Admin, User, PersonalInfo} = require("./schema");
 const bcrypt = require("bcryptjs");
 
 const Login = async (req, res) => {
@@ -61,6 +61,26 @@ const Register = async (req, res) => {
   }
 };
 
+const addPersonalInfo = async (req, res) => {
+  try {
+    const { formData } = req.body;
+
+    if (!formData) {
+      return res.status(400).json({ error: "Please fill all fields" });
+    }
+
+    const personalInfo = new PersonalInfo(formData);
+    await personalInfo.save();
+
+    res.json({ message: "Personal Information Filled Successfully" });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+
+
 const Pitcure = async (req, res) => {
   const { userId, profilePic } = req.body;
 
@@ -107,43 +127,6 @@ const Posts = async (req, res) => {
       group: userGroup,
     }).populate("user");
     res.send({ posts });
-  } catch (error) {
-    console.log({ error });
-  }
-};
-
-const SetComment = async (req, res) => {
-  const { postId, userClass, userGroup, comment, userId } = req.body;
-
-  try {
-    if (!postId && !userClass && !userGroup && !comment && !userId) {
-      return res.json({ error: "Plz fill all fields" });
-    } else {
-      const comments = new Comment({
-        class: userClass,
-        group: userGroup,
-        user: userId,
-        post: postId,
-        comment,
-      });
-      await comments.save();
-      res.send({ message: "Commented successfully" });
-    }
-  } catch (error) {
-    console.log({ error });
-  }
-};
-
-const GetComments = async (req, res) => {
-  const { postId, userClass, userGroup } = req.body;
-
-  try {
-    const comments = await Comment.find({
-      post: postId,
-      class: userClass,
-      group: userGroup,
-    }).populate("user");
-    res.send({ comments });
   } catch (error) {
     console.log({ error });
   }
@@ -266,7 +249,6 @@ module.exports = {
   Register,
   Create,
   Posts,
-  SetComment,
-  GetComments,
   Pitcure,
+  addPersonalInfo,
 };
