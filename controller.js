@@ -1,4 +1,4 @@
-const { Group, Class, Post, Admin, User, PersonalInfo} = require("./schema");
+const { Group, Class, Post, Admin, User, PersonalInfo, Comment} = require("./schema");
 const bcrypt = require("bcryptjs");
 
 const Login = async (req, res) => {
@@ -132,6 +132,43 @@ const Posts = async (req, res) => {
   }
 };
 
+const SetComment = async (req, res) => {
+  const { postId, userClass, userGroup, comment, userId } = req.body;
+
+  try {
+    if (!postId && !userClass && !userGroup && !comment && !userId) {
+      return res.json({ error: "Plz fill all fields" });
+    } else {
+      const comments = new Comment({
+        class: userClass,
+        group: userGroup,
+        user: userId,
+        post: postId,
+        comment,
+      });
+      await comments.save();
+      res.send({ message: "Commented successfully" });
+    }
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+const GetComments = async (req, res) => {
+  const { postId, userClass, userGroup } = req.body;
+
+  try {
+    const comments = await Comment.find({
+      post: postId,
+      class: userClass,
+      group: userGroup,
+    }).populate("user");
+    res.send({ comments });
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
 const SetClass = async (req, res) => {
   const { className } = req.body;
 
@@ -249,6 +286,8 @@ module.exports = {
   Register,
   Create,
   Posts,
+  SetComment,
+  GetComments,
   Pitcure,
   addPersonalInfo,
 };

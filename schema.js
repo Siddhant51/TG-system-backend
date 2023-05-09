@@ -98,6 +98,29 @@ const postSchema = new mongoose.Schema({
   },
 });
 
+const commentSchema = new mongoose.Schema({
+  comment: {
+    type: String,
+    required: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  post: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+  },
+  class: {
+    type: String,
+    required: false,
+  },
+  group: {
+    type: String,
+    required: false,
+  },
+});
+
 const personalinfoSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -220,6 +243,7 @@ const Group = mongoose.model("Group", groupSchema);
 const User = mongoose.model("User", userSchema);
 const Admin = mongoose.model("Admin", adminSchema);
 const Post = mongoose.model("Post", postSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 const PersonalInfo = mongoose.model("PersonalInfo",personalinfoSchema);
 
-module.exports = { Class, Group, User, Admin, Post, PersonalInfo};
+module.exports = { Class, Group, User, Admin, Post, PersonalInfo, Comment };
