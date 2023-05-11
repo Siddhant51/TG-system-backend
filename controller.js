@@ -1,4 +1,14 @@
-const { Group, Class, Post, Comment, Admin, User } = require("./schema");
+const { post } = require("./routes");
+const {
+  Group,
+  Class,
+  Post,
+  Admin,
+  User,
+  PersonalInfo,
+  Comment,
+  Attendance,
+} = require("./schema");
 const bcrypt = require("bcryptjs");
 
 const Login = async (req, res) => {
@@ -61,6 +71,24 @@ const Register = async (req, res) => {
   }
 };
 
+const addPersonalInfo = async (req, res) => {
+  try {
+    const { formData } = req.body;
+
+    if (!formData) {
+      return res.status(400).json({ error: "Please fill all fields" });
+    }
+
+    const personalInfo = new PersonalInfo(formData);
+    await personalInfo.save();
+
+    res.json({ message: "Personal Information Filled Successfully" });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
 const Pitcure = async (req, res) => {
   const { userId, profilePic } = req.body;
 
@@ -109,6 +137,45 @@ const Posts = async (req, res) => {
     res.send({ posts });
   } catch (error) {
     console.log({ error });
+  }
+};
+
+const createPost = async (req, res) => {
+  const { userClass, userGroup, pdfUrl, userId } = req.body;
+
+  console.log("2");
+  try {
+    if (!userClass && !userGroup && !userId && !pdfUrl) {
+      return res.json({ error: "Please enter at least one field" });
+    } else {
+      const post = new Attendance({
+        class: userClass,
+        group: userGroup,
+        pdf: pdfUrl,
+        user: userId,
+      });
+      await post.save();
+      res.send({ message: "Posted successfully" });
+    }
+  } catch (error) {
+    console.log({ error });
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+// Get posts by class and group
+const getPostsByClassAndGroup = async (req, res) => {
+  const { userClass, userGroup } = req.body;
+
+  try {
+    const posts = await Attendance.find({
+      class: userClass,
+      group: userGroup,
+    }).populate("user");
+    res.send({ posts });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).send({ error: "Internal Server Error" });
   }
 };
 
@@ -269,4 +336,7 @@ module.exports = {
   SetComment,
   GetComments,
   Pitcure,
+  addPersonalInfo,
+  createPost,
+  getPostsByClassAndGroup,
 };
