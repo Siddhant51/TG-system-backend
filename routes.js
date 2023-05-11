@@ -14,7 +14,8 @@ const {
   SetComment,
   GetComments,
   Pitcure,
-  addPersonalInfo,
+  SetPersonalInfo,
+  GetPersonalInfo,
   createPost,
   getPostsByClassAndGroup,
 } = require("./controller");
@@ -51,10 +52,11 @@ router.post("/getcomments", GetComments);
 
 router.post("/picture", Pitcure);
 
-router.post("/personalinfo", addPersonalInfo);
+router.post("/setpersonalinfo", SetPersonalInfo);
+
+router.post("/getpersonalinfo", GetPersonalInfo);
 
 router.post("/setattendance", createPost);
 
 router.post("/getattendance", getPostsByClassAndGroup);
-
 module.exports = router;
