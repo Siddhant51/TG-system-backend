@@ -16,6 +16,8 @@ const {
   Pitcure,
   SetPersonalInfo,
   GetPersonalInfo,
+  createPost,
+  getPostsByClassAndGroup,
 } = require("./controller");
 
 const router = express.Router();
@@ -53,4 +55,8 @@ router.post("/picture", Pitcure);
 router.post("/setpersonalinfo", SetPersonalInfo);
 
 router.post("/getpersonalinfo", GetPersonalInfo);
+
+router.post("/setattendance", createPost);
+
+router.post("/getattendance", getPostsByClassAndGroup);
 module.exports = router;

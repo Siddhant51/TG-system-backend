@@ -1,3 +1,4 @@
+const { post } = require("./routes");
 const {
   Group,
   Class,
@@ -6,6 +7,7 @@ const {
   User,
   PersonalInfo,
   Comment,
+  Attendance,
 } = require("./schema");
 const bcrypt = require("bcryptjs");
 
@@ -158,6 +160,45 @@ const Posts = async (req, res) => {
     res.send({ posts });
   } catch (error) {
     console.log({ error });
+  }
+};
+
+const createPost = async (req, res) => {
+  const { userClass, userGroup, pdfUrl, userId } = req.body;
+
+  console.log("2");
+  try {
+    if (!userClass && !userGroup && !userId && !pdfUrl) {
+      return res.json({ error: "Please enter at least one field" });
+    } else {
+      const post = new Attendance({
+        class: userClass,
+        group: userGroup,
+        pdf: pdfUrl,
+        user: userId,
+      });
+      await post.save();
+      res.send({ message: "Posted successfully" });
+    }
+  } catch (error) {
+    console.log({ error });
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+// Get posts by class and group
+const getPostsByClassAndGroup = async (req, res) => {
+  const { userClass, userGroup } = req.body;
+
+  try {
+    const posts = await Attendance.find({
+      class: userClass,
+      group: userGroup,
+    }).populate("user");
+    res.send({ posts });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).send({ error: "Internal Server Error" });
   }
 };
 
@@ -320,4 +361,6 @@ module.exports = {
   Pitcure,
   SetPersonalInfo,
   GetPersonalInfo,
+  createPost,
+  getPostsByClassAndGroup,
 };

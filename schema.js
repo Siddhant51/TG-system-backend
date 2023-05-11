@@ -121,6 +121,29 @@ const commentSchema = new mongoose.Schema({
   },
 });
 
+const attendanceSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  pdf: {
+    type: String,
+    required: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  class: {
+    type: String,
+    required: false,
+  },
+  group: {
+    type: String,
+    required: false,
+  },
+});
+
 const personalinfoSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -190,6 +213,22 @@ const personalinfoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hasInput: {
+    type: String,
+    required: true,
+  },
+  company: {
+    type: String,
+    required: false,
+  },
+  designation: {
+    type: String,
+    required: false,
+  },
+  location: {
+    type: String,
+    required: false,
+  },
   class: {
     type: String,
     required: false,
@@ -227,5 +266,15 @@ const Admin = mongoose.model("Admin", adminSchema);
 const Post = mongoose.model("Post", postSchema);
 const Comment = mongoose.model("Comment", commentSchema);
 const PersonalInfo = mongoose.model("PersonalInfo", personalinfoSchema);
+const Attendance = mongoose.model("Attendance", attendanceSchema);
 
-module.exports = { Class, Group, User, Admin, Post, PersonalInfo, Comment };
+module.exports = {
+  Class,
+  Group,
+  User,
+  Admin,
+  Post,
+  PersonalInfo,
+  Comment,
+  Attendance,
+};
