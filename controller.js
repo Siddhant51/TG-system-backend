@@ -1,4 +1,12 @@
-const { Group, Class, Post, Admin, User, PersonalInfo, Comment} = require("./schema");
+const {
+  Group,
+  Class,
+  Post,
+  Admin,
+  User,
+  PersonalInfo,
+  Comment,
+} = require("./schema");
 const bcrypt = require("bcryptjs");
 
 const Login = async (req, res) => {
@@ -61,25 +69,46 @@ const Register = async (req, res) => {
   }
 };
 
-const addPersonalInfo = async (req, res) => {
+const SetPersonalInfo = async (req, res) => {
   try {
-    const { formData } = req.body;
+    const { userId, formData } = req.body;
 
     if (!formData) {
       return res.status(400).json({ error: "Please fill all fields" });
     }
 
-    const personalInfo = new PersonalInfo(formData);
-    await personalInfo.save();
+    let personalInfo = await PersonalInfo.findOne({ user: userId });
 
-    res.json({ message: "Personal Information Filled Successfully" });
+    if (!personalInfo) {
+      personalInfo = new PersonalInfo({ user: userId });
+    }
+
+    for (const key in formData) {
+      personalInfo[key] = formData[key];
+    }
+
+    await personalInfo.save();
   } catch (error) {
     console.log({ error });
     res.status(500).json({ error: "Something went wrong" });
   }
 };
 
+const GetPersonalInfo = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const personalInfo = await PersonalInfo.findOne({ user: userId });
 
+    if (!personalInfo) {
+      return res.status(404).json({ error: "Personal Information not found" });
+    }
+
+    res.send({ formData: personalInfo });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
 
 const Pitcure = async (req, res) => {
   const { userId, profilePic } = req.body;
@@ -289,5 +318,6 @@ module.exports = {
   SetComment,
   GetComments,
   Pitcure,
-  addPersonalInfo,
+  SetPersonalInfo,
+  GetPersonalInfo,
 };
