@@ -8,6 +8,7 @@ const {
   PersonalInfo,
   Comment,
   Attendance,
+  Achievement,
 } = require("./schema");
 const bcrypt = require("bcryptjs");
 
@@ -163,7 +164,7 @@ const Posts = async (req, res) => {
   }
 };
 
-const createPost = async (req, res) => {
+const SetAttendance = async (req, res) => {
   const { userClass, userGroup, pdfUrl, userId } = req.body;
 
   console.log("2");
@@ -186,14 +187,50 @@ const createPost = async (req, res) => {
   }
 };
 
-// Get posts by class and group
-const getPostsByClassAndGroup = async (req, res) => {
+const GetAttendance = async (req, res) => {
   const { userClass, userGroup } = req.body;
 
   try {
     const posts = await Attendance.find({
       class: userClass,
       group: userGroup,
+    }).populate("user");
+    res.send({ posts });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+const SetAchievement = async (req, res) => {
+  const { userClass, userGroup, pdfUrl, userId } = req.body;
+
+  console.log("2");
+  try {
+    if (!userClass && !userGroup && !userId && !pdfUrl) {
+      return res.json({ error: "Please enter at least one field" });
+    } else {
+      const post = new Achievement({
+        class: userClass,
+        group: userGroup,
+        pdf: pdfUrl,
+        user: userId,
+      });
+      await post.save();
+      res.send({ message: "Posted successfully" });
+    }
+  } catch (error) {
+    console.log({ error });
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+const GetAchievement = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const posts = await Achievement.find({
+      user: userId,
     }).populate("user");
     res.send({ posts });
   } catch (error) {
@@ -361,6 +398,8 @@ module.exports = {
   Pitcure,
   SetPersonalInfo,
   GetPersonalInfo,
-  createPost,
-  getPostsByClassAndGroup,
+  SetAttendance,
+  GetAttendance,
+  SetAchievement,
+  GetAchievement,
 };

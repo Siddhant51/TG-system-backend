@@ -16,8 +16,10 @@ const {
   Pitcure,
   SetPersonalInfo,
   GetPersonalInfo,
-  createPost,
-  getPostsByClassAndGroup,
+  SetAttendance,
+  GetAttendance,
+  SetAchievement,
+  GetAchievement,
 } = require("./controller");
 
 const router = express.Router();
@@ -56,7 +58,11 @@ router.post("/setpersonalinfo", SetPersonalInfo);
 
 router.post("/getpersonalinfo", GetPersonalInfo);
 
-router.post("/setattendance", createPost);
+router.post("/setattendance", SetAttendance);
 
-router.post("/getattendance", getPostsByClassAndGroup);
+router.post("/getattendance", GetAttendance);
+
+router.post("/setachievement", SetAchievement);
+
+router.post("/getachievement", GetAchievement);
 module.exports = router;

@@ -144,6 +144,29 @@ const attendanceSchema = new mongoose.Schema({
   },
 });
 
+const achievementSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  pdf: {
+    type: String,
+    required: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  class: {
+    type: String,
+    required: false,
+  },
+  group: {
+    type: String,
+    required: false,
+  },
+});
+
 const personalinfoSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -169,10 +192,10 @@ const personalinfoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dob: {
-    type: Date,
-    required: true,
-  },
+  // dob: {
+  //   type: Date,
+  //   required: true,
+  // },
   s_phone: {
     type: String,
     required: true,
@@ -213,22 +236,22 @@ const personalinfoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  hasInput: {
-    type: String,
-    required: true,
-  },
-  company: {
-    type: String,
-    required: false,
-  },
-  designation: {
-    type: String,
-    required: false,
-  },
-  location: {
-    type: String,
-    required: false,
-  },
+  // hasInput: {
+  //   type: String,
+  //   required: true,
+  // },
+  // company: {
+  //   type: String,
+  //   required: false,
+  // },
+  // designation: {
+  //   type: String,
+  //   required: false,
+  // },
+  // location: {
+  //   type: String,
+  //   required: false,
+  // },
   class: {
     type: String,
     required: false,
@@ -267,6 +290,7 @@ const Post = mongoose.model("Post", postSchema);
 const Comment = mongoose.model("Comment", commentSchema);
 const PersonalInfo = mongoose.model("PersonalInfo", personalinfoSchema);
 const Attendance = mongoose.model("Attendance", attendanceSchema);
+const Achievement = mongoose.model("Achievement", achievementSchema);
 
 module.exports = {
   Class,
@@ -277,4 +301,5 @@ module.exports = {
   PersonalInfo,
   Comment,
   Attendance,
+  Achievement,
 };
