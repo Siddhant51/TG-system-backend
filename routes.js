@@ -20,6 +20,8 @@ const {
   GetAttendance,
   SetAchievement,
   GetAchievement,
+  GetStudents,
+  GetStudentData,
 } = require("./controller");
 
 const router = express.Router();
@@ -65,4 +67,8 @@ router.post("/getattendance", GetAttendance);
 router.post("/setachievement", SetAchievement);
 
 router.post("/getachievement", GetAchievement);
+
+router.post("/getstudents", GetStudents);
+
+router.post("/getstudentdata", GetStudentData);
 module.exports = router;

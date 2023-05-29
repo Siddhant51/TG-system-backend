@@ -381,6 +381,36 @@ const GetUsers = async (req, res) => {
   }
 };
 
+const GetStudents = async (req, res) => {
+  const { userClass, userGroup } = req.body;
+
+  try {
+    const users = await User.find({
+      role: "student",
+      class: userClass,
+      group: userGroup,
+    });
+    res.send({ users });
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+const GetStudentData = async (req, res) => {
+  const { studentId } = req.body;
+
+  try {
+    const info = await PersonalInfo.find({
+      user: studentId,
+    }).populate("user");
+    const achievement = await Achievement.find({
+      user: studentId,
+    });
+    res.send({ info, achievement });
+  } catch (error) {
+    console.log({ error });
+  }
+};
 module.exports = {
   SetClass,
   SetGroup,
@@ -402,4 +432,6 @@ module.exports = {
   GetAttendance,
   SetAchievement,
   GetAchievement,
+  GetStudents,
+  GetStudentData,
 };
